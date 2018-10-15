@@ -1,0 +1,128 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 1.3em;
+}
+.ui {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 40px 50px 1fr;
+    background-color: #0079bf;
+    color: #eee;
+}
+.navbar {
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+}
+.navbar.app {
+    background-color: #0067a3;
+    font-size: 1.5rem;
+}
+.navbar.board {
+    font-size: 1.1rem;
+}
+.lists {
+    display: flex;
+    overflow-x: auto;
+}
+  .lists > * {
+    flex: 0 0 auto;
+    margin-left: 10px;
+}
+.lists::after {
+    content: '';
+    flex: 0 0 10px;
+}
+.list {
+    width: 300px;
+    height: calc(100% - 10px - 17px);
+}
+  .list > * {
+    background-color: #e2e4e6;
+    color: #333;
+    padding: 0 10px;
+}
+.list header {
+    line-height: 36px;
+    font-size: 16px;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.list footer {
+    line-height: 36px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #888;
+    cursor: pointer;
+}
+.list ul {
+    list-style: none;
+    margin: 0;
+    max-height: calc(100% - 36px - 36px);
+    overflow-y: auto;
+}
+.list ul li {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+.list ul li:not(:last-child) {
+    margin-bottom: 10px;
+}
+.list ul li img {
+    display: block;
+    width: calc(100% + 2 * 10px);
+    margin: -10px 0 10px -10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.add {
+    display: block;
+    border-radius: 5px;
+    background-color: #e2e4e6;
+    height: fit-content;
+    width: 300px;
+    color: #333;
+}
+
+.add header {
+    padding-left: 10px;
+    text-align: left;
+    line-height: 36px;
+    font-size: 16px;
+    font-weight: bold;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.add form {
+    background-color: #e2e4e6;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: grid;
+    text-align: center;
+    justify-content: center;
+}
+
+.add form button {
+    background-color: #5aac44;
+    box-shadow: 0 1px 0 0 #3f6f21;
+    border: none;
+    color: #fff;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.add form input {
+    background: #fff;
+    border: 1px solid #5ba4cf;
+    box-shadow: 0 0 0 1px #5ba4cf;
+    display: block;
+    margin: 0;
+    width: 100%;
+}
