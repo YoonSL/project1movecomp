@@ -62,7 +62,7 @@ module.exports = function (app) {
         db.Cards.create(req.body)
             .then(function (dbcards) {
                 // console.log(dbcards);
-                db.Lists.findOneAndUpdate({ _id: req.params.id }, { $push: { cards: dbcards._id } }, { new: true })
+                db.Lists.findOneAndUpdate({ _id: req.params.id }, { $push: { cards: dbcards } }, { new: true })
                     .then(newListInfo => {
                         res.json({ list: newListInfo, newCardInfo: dbcards });
 
@@ -129,8 +129,8 @@ module.exports = function (app) {
             });
     });
 
-    app.delete('/api/cards', function (req, res) {
-        db.Cards.findOneAndDelete(req.body)
+    app.delete('/api/lists/:id', function (req, res) {
+        db.Cards.findOneAndDelete(req._id)
             .populate('cards')
             .then(function (cards) {
                 res.json(cards);
