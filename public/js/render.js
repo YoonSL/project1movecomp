@@ -3,9 +3,6 @@ $(function () {
     const renderList = function () {
         $('.content').empty();
 
-
-
-
         $.ajax({ url: "/api/lists", method: "GET" })
             //require data from listdata.js and get list object
             .then(function (dataList) {
@@ -27,26 +24,33 @@ $(function () {
                                     .text(e.list),
                                 // create unordered list for the card element
                                 $('<ul>')
-                                    .addClass(`${e.list}`),
+                                    .addClass(`${e.list}`)
+                                    .addClass(`containers`),
                                 // create a footer add a card /button
                                 $('<footer>')
                                     .text('Add a card...')
-                                    .attr('id', 'clickAddList'),
+                                    .attr('id', 'clickAddCard'),
                         )
                     )
+                    
                     $.ajax({ url: `/api/lists/${e._id}`, method: 'GET' })
                         .then(function (dataList) {
                             // console.log(dataList);
-                            let cardList = $(`.${e.list}`)
+                            let cardList = $(`.${e.list}`).addClass('listOfCards')
                             dataList[0].cards.forEach(eachCard =>
                                 cardList.append(
                                     $('<li>')
                                         .text(eachCard.card)
                                         .attr('draggable', 'true')
-                                        .attr('id', 'dragCard')
-                                ))
+                                        .attr('data-cardId',`${eachCard._id}`)
+                                        .addClass('dragCard')
+                            )
+                        )
+                        drag();
+                        
                         })
                 })
+                
                 contentHtml.append(
                     $('<div>').addClass('add').append(
                         $('<header>')
@@ -64,33 +68,126 @@ $(function () {
                 )
 
                 $(`.lists`).append(contentHtml);
-
-
+                
             })
+            }
+
+            $(document).on('click','.clickAddCard',function(){
+                
 
 
+                let newdata = {
+                        card: $('inputCard').val()
+                    }
+                    console.log(newdata);
+                $.ajax({ url: '/api/lists', method: "GET" })
+                .then(function (listData) {
+                    
+                    // console.log(newdata)
+                    listData.forEach(e =>
+                        $.ajax({ url: `/api/lists/${e._id}`, method: "POST", data: newdata })
+                        .then(function(){
+                            $('.listofCards').empty();
+                            renderList();
+                        })
+                    )})
+                })
 
-    }
+                function drag(){
+                    const fills = document.querySelectorAll('.dragCard');
+                    // console.log(fills);
+                    const containers = document.querySelectorAll('.containers');
 
-    $("html").on("dragover", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
+                    // console.log(containers);
 
-        $(this).addClass('dragging');
+                    
+            
+                    for(const fill of fills){
+                        fill.addEventListener('dragstart',dragStart);
+                        fill.addEventListener('dragend', dragEnd);  
+                    }
+            
+                    for(const container of containers){
+                        container.addEventListener('dragover',dragOver);
+                        container.addEventListener('dragenter',dragEnter);
+                        container.addEventListener('dragleave',dragLeave);
+                        container.addEventListener('drop',dragDrop);
+                    }
+
+                    let id;
+                   
+            
+                    function dragStart(){
+                        id = $(this).attr("data-cardId");
+                    }
+            
+                    function dragEnd(){
+                
+                    }
+            
+                    
+
+                    function dragOver(ev){
+                        ev.preventDefault();
+                       
+                    }
+                    function dragEnter(ev){
+                        ev.preventDefault();
+                        
+                    }
+                    function dragLeave(){
+                        
+                    }
+                    function dragDrop(){
+
+                        const moveList = $(this).attr('data-idd');
+                        const movedCard = id;
+                        console.log(movedCard);
+                        console.log(moveList);
+                        // console.log(movedCard);
+                        // console.log(this);
+                        let newData = {
+                            card : movedCard
+                        }
+                        // $.ajax({url:`/api/lists/${moveList}`, method:'POST', data: newData})
+                        // $.ajax({url:'/api/cards',method:'DELETE', data:newData})
+                        // .then(function(){
+                            
+                        // })
+                    }
+                    
+                }        
+
+                function drop(){
+                    
+                }
+        renderList();
+        
+        
     });
 
-    $("html").on("dragleave", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        $(this).removeClass('dragging');
-    });
 
-    $("html").on("drop", function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.target.appendChild(document.getElementById(data));
-        alert("Dropped!");
-    });
+
+
+    // $("html").on("dragover", function (event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+
+    //     $(this).addClass('dragging');
+    // });
+
+    // $("html").on("dragleave", function (event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     $(this).removeClass('dragging');
+    // });
+
+    // $("html").on("drop", function (event) {
+    //     event.preventDefault();
+    //     event.stopPropagation();
+    //     event.target.appendChild(document.getElementById(data));
+    //     alert("Dropped!");
+    // });
 
     // $(document).on('allowDrop','.list', function(ev){
     //     ev.preventDefault();
@@ -115,11 +212,6 @@ $(function () {
     //     var data = ev.dataTransfer.getData("text");
     //     ev.tartget.appendChild(document.getElementById(data));
     // }
-
-    renderList();
-
-
-});
 
 //     const list = $('#drag');
 //     const containers = $('.list').data('id');

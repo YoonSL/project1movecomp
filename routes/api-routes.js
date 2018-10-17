@@ -117,6 +117,7 @@ module.exports = function (app) {
             });
     });
 
+
     app.delete('/api/notes', function (req, res) {
         db.Notes.findOneAndDelete(req.body)
             .populate('noteincard')
