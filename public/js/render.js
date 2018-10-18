@@ -208,13 +208,7 @@ function dragNDrop(){
     })
 
     $(document).on('dragend',`.dragCard`,function() { 
-        let newData = {
-            card: cardId
-        }
-        $.ajax({ url: `/api/lists/${moveList}`, method: 'POST', data: newData })
-        $.ajax({ url: `/api/lists/${firstBox}`, method: 'DELETE', data: newData })
-        $('.lists').empty();
-        renderList();
+        
     })
 
     $(document).on('dragover',`.containers`,function(ev) { 
@@ -227,6 +221,13 @@ function dragNDrop(){
 
     $(document).on('drop',`.containers`,function() { 
         moveList = $(this).attr("data-idd");
+        let newData = {
+            card: cardId
+        }
+        $.ajax({ url: `/api/lists/${moveList}`, method: 'POST', data: newData })
+        $.ajax({ url: `/api/lists/${firstBox}`, method: 'DELETE', data: newData })
+        $('.lists').empty();
+        renderList();
     })
 }
     dragNDrop();
