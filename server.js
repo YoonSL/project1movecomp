@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended:true}));
 
 app.use(express.static('public'));
 
-mongoose.connect('mongodb://localhost/trellodata',{useNewUrlParser: true});
+mongoose.connect('mongodb://yoon:123456a@ds135993.mlab.com:35993/heroku_nqs1vd2j', {useNewUrlParser: true});
 
 require('./routes/api-routes')(app);
 
