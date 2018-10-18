@@ -12,7 +12,7 @@ $(function () {
                             .attr('data-id', `${e._id}`)
                             .addClass(`list`).append(
                                 $('<header>')
-                                    .text(e.list).append(
+                                    .text(`${e.list}`).append(
                                         $('<i>')
                                             .addClass('far fa-window-close')
                                             .attr('data-id', `${e._id}`)
