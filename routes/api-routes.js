@@ -98,7 +98,7 @@ module.exports = function (app) {
             });
     });
     app.put('/api/cards', function (req, res) {
-        db.Cards.findOneAndUpdate({ _id : req.params.id }, { $set: { card: req.body.card } })
+        db.Cards.findOneAndUpdate({ _id : req.body._id }, { $set: { card: req.body.card } })
             .populate('cards')
             .then(function (cards) {
                 res.json(cards);

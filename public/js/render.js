@@ -35,7 +35,7 @@ $(function () {
                     renderCard(`${e._id}`,`${e.list}`);
                     
                     //this is the add a card button event
-                    $('.clickAddList').on('click', function (e) {
+                    $('.clickAddList').on('click', function () {
                         $(".clickAddList").off("click")
                         $(this)
                             .text('')
@@ -127,30 +127,49 @@ function renderCard(listId,className){
                 )
                 
             )
+
+            
         })
     }
 
 $(document).on('click','.cardEdit',function(){
-    console.log($(this).parent());
+    $(document).bind('cardEdit',function(){
+        $(document).off('click','.cardEdit');
+    });
     const list = $(this).parent();
+    const fromList = $(this).attr('data-id');
     list.append(
         $('<input>')
-            .attr('placeholder', "enter list title"),
+            .attr('placeholder', "enter list title")
+            .addClass('cardEditInput'),
         $('<button>')
+            .addClass('cardEditButton')
             .text('Click to Edit')
     )
-    // const whichCard = $(this).attr('data-id');
-    // const fromList = $(this).attr('data-name');
-    // console.log(whichCard)
-    // console.log(fromList);
-    // const newData = {
-    //     _id : whichCard
-    // }
-    // $.ajax({ url: `/api/lists/${fromList}`, method: 'DELETE', data: newData })
-    // .then(function(){
-    //     renderList();
-    // })
+
+    $(document).on('click','.cardEditButton',function(){
+        
+        const newCard = $('.cardEditInput').val().trim()
+
+        console.log(newCard);
+
+        const newData = {
+        _id : fromList,
+        card : newCard 
+        }
+
+        $.ajax({ url: `/api/cards`, method: 'PUT', data: newData })
+        .then(function(){
+    
+            renderList();
+        })
+
+        
+    })
+    
 })
+
+
 
 $(document).on('click','.cardDelete',function(){
     const whichCard = $(this).attr('data-id');
