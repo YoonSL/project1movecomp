@@ -27,7 +27,7 @@ module.exports = function (app) {
         db.Lists.find({ _id: req.params.id })
             .populate('cards')
             .then(function (list) {
-                console.log(list);
+                // console.log(list);
                 res.json(list);
             })
             .catch(function (err) {
@@ -98,7 +98,7 @@ module.exports = function (app) {
             });
     });
     app.put('/api/cards', function (req, res) {
-        db.Cards.findOneAndUpdate({ _id: req.body._id }, { $set: { card: req.body.card } })
+        db.Cards.findOneAndUpdate({ _id : req.params.id }, { $set: { card: req.body.card } })
             .populate('cards')
             .then(function (cards) {
                 res.json(cards);
@@ -130,10 +130,13 @@ module.exports = function (app) {
     });
 
     app.delete('/api/lists/:id', function (req, res) {
-        db.Cards.findOneAndDelete(req._id)
-            .populate('cards')
-            .then(function (cards) {
-                res.json(cards);
+        // const deleteid = req._id;
+        db.Cards.findOneAndDelete(req.body)
+            // .populate('cards')
+            .then(function (deleteCard) {
+                db.Lists.findOneAndUpdate({_id: req.params.id}, {$pull: {'list.cards' : {body :deleteCard}}});
+                
+                res.json(deleteCard);
             })
             .catch(function (err) {
                 res.json(err);
@@ -141,7 +144,7 @@ module.exports = function (app) {
     });
 
     app.delete('/api/lists', function (req, res) {
-        db.Lists.findOneAndDelete(req._id)
+        db.Lists.findOneAndDelete(req.body)
             .then(function (lists) {
                 res.json(lists);
             })
