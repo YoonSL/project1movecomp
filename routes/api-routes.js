@@ -134,7 +134,8 @@ module.exports = function (app) {
         db.Cards.findOneAndDelete(req.body)
             // .populate('cards')
             .then(function (deleteCard) {
-                db.Lists.findOneAndUpdate({_id: req.params.id}, {$pull: {'list.cards' : {body :deleteCard}}});
+                db.Lists.findOneAndUpdate({_id: req.params.id}, {$pull: {'list.cards' : {_id :deleteCard._id}}});
+                console.log(deleteCard._id);
                 
                 res.json(deleteCard);
             })
